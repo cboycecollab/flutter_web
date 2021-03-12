@@ -4,9 +4,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:web_app/providers/firebase_providers.dart';
 
 class AuthWidget extends ConsumerWidget {
-  AuthWidget({required this.signedInBuilder, required this.signedOutBuilder});
+  AuthWidget(
+      {required this.signedInBuilder,
+      required this.signedOutBuilder,
+      required this.routeCallback});
   final WidgetBuilder signedInBuilder;
   final WidgetBuilder signedOutBuilder;
+  final Function routeCallback;
 
   @override
   Widget build(BuildContext context, watch) {
@@ -32,9 +36,11 @@ class AuthWidget extends ConsumerWidget {
 
   Widget _data(BuildContext context, User? user) {
     if (user != null) {
+      routeCallback(true);
       return signedInBuilder(context);
     }
 
+    routeCallback(false);
     return signedOutBuilder(context);
   }
 }
